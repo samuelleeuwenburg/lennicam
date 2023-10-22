@@ -1,0 +1,21 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Lennicam</title>
+    <meta charset=utf-8 />
+    <link href="/video-js.css" rel="stylesheet">
+    <script src="/videojs-contrib-hls.js"></script>
+    <script src="/video.js"></script>
+  </head>
+  <body>
+    <video id='hls-example'  class="video-js vjs-default-skin" width="1280" height="720" controls>
+      <!-- <source type="application/x-mpegURL" src="http://raspberrypi:8000/stream.m3u8"> -->
+      <source type="application/x-mpegURL" src="/stream.m3u8">
+    </video>
+
+    <script>
+      const player = videojs('hls-example');
+      player.play();
+    </script>
+  </body>
+</html>

@@ -10,9 +10,13 @@ video_config = picam2.create_video_configuration({"size": (640, 480)})
 picam2.configure(video_config)
 
 encoder = H264Encoder(bitrate=1000000, repeat=True, iperiod=15)
-output = FfmpegOutput("-f hls -hls_time 1 -hls_list_size 1 -hls_flags delete_segments -hls_allow_cache 0 stream.m3u8", audio=True)
+output = FfmpegOutput("-f hls -hls_time 1 -hls_list_size 1 -hls_flags delete_segments -hls_allow_cache 0 public/stream.m3u8", audio=True)
 
 picam2.start_recording(encoder, output)
 
-with socketserver.TCPServer(("", 8000), http.server.SimpleHTTPRequestHandler) as httpd:
+class Handler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory="./public", **kwargs)
+
+with socketserver.TCPServer(("", 8080), Handler) as httpd:
     httpd.serve_forever()
